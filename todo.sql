@@ -24,3 +24,5 @@ COMMENT ON COLUMN todos.updated_at IS '수정일자';
 SELECT gen_random_uuid();
 
 select * from todos;
+
+-- 테스트
