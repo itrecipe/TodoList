@@ -6,7 +6,7 @@
 <!-- namespace="매퍼 인터페이스 경로" -->
 <mapper namespace="com.toy.todo.mapper.TodoMapper">
 
-    <select id="list" resultMap="Todos">
+    <select id="list" resultType="Todos">
         SELECT *
         FROM todos
     </select>
@@ -32,7 +32,7 @@
         <!-- mybatis에서 제공되는 태그 <set></set>,
              update set where 쿼리를 작성하기 위함
         -->
-
+        UPDATE todos
         <set>
             <if test="name != null">
                 name = #{name},
@@ -51,6 +51,7 @@
         <!-- mybatis에서 제공되는 태그 <set></set>,
              update set where 쿼리를 작성하기 위함
         -->
+        UPDATE todos
         <set>
             <if test="name != null">
                 name = #{name},
@@ -61,6 +62,7 @@
             <if test="seq != null">
                 seq = #{seq},
             </if>
+                updated_at = now()
         </set>
         WHERE id = #{id}
     </update>

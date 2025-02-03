@@ -1,5 +1,6 @@
 package com.toy.todo.service;
 
+import com.github.pagehelper.PageInfo;
 import com.toy.todo.domain.Todos;
 import org.springframework.stereotype.Service;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public interface TodoService extends BaseService<Todos> {
+
+    public PageInfo<Todos> list(int page, int size);
 }

@@ -1,5 +1,7 @@
 package com.toy.todo.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.toy.todo.domain.Todos;
 import com.toy.todo.mapper.TodoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public boolean insert(Todos entity) {
-        // true/false 여부만 체크하면 되니까 아래와 같이 작성 나머지도 동일하다.
+        // true & false 여부만 체크하면 되니까 아래와 같이 작성 나머지도 동일하다.
         return todoMapper.insert(entity) > 0;
     }
 
@@ -50,5 +52,16 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public boolean deleteById(String id) {
         return todoMapper.deleteById(id) > 0;
+    }
+
+    @Override
+    public PageInfo<Todos> list(int page, int size) {
+        // PageHelper.startPage( 현재 페이지, 페이지별 게시글 수);
+        PageHelper.startPage(page, size);
+
+        // 리스트 조회
+        List<Todos> list = todoMapper.list();
+        PageInfo<Todos> pageInfo = new PageInfo<>(list);
+        return pageInfo;
     }
 }

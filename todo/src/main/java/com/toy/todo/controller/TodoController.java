@@ -1,5 +1,7 @@
 package com.toy.todo.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.toy.todo.domain.Pagination;
 import com.toy.todo.domain.Todos;
 import com.toy.todo.service.TodoService;
 import lombok.extern.slf4j.Slf4j;
@@ -7,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -17,11 +20,22 @@ public class TodoController {
 
     @Autowired private TodoService todoService;
 
-    // sp-crud, 난 이 라이브러리 없고 찾아봐도 안되서 못썼음
+    /* sp-crud : 해당 라이브러리를 갖다 쓰려고 검색해봤으나 못 찾음,
+       그리고 사용방법을 잘 모르겠음(어떻게 쓰는건지 나중에 다시 확인해볼것)
+     */
     @GetMapping()
-    public ResponseEntity<?> getAllTodo() {
+    public ResponseEntity<?> getAllTodo(
+            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size
+    ) {
         try {
-            List<Todos> list = todoService.list();
+            PageInfo<Todos> pageInfo = todoService.list(page, size);
+            Pagination pagination = new Pagination(); // 페이지네이션 객체 생성
+            pagination.setTotal(pageInfo.getTotal());
+            List<Todos> list = pageInfo.getList();
+            Map<String, Object> response = new HashMap<>();
+            response.put("list", list);
+            response.put("pagination", pagination);
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -29,9 +43,10 @@ public class TodoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOneTodo(@PathVariable String id) {
+    public ResponseEntity<?> getOneTodo(@PathVariable("id") String id) {
         try {
-            return new ResponseEntity<>("GetOne Results", HttpStatus.OK);
+            Todos todo = todoService.selectById(id);
+            return new ResponseEntity<>(todo, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -40,7 +55,11 @@ public class TodoController {
     @PostMapping()
     public ResponseEntity<?> createTodo(@RequestBody Todos todo) {
         try {
-            return new ResponseEntity<>("GetAll Results", HttpStatus.OK);
+            boolean result = todoService.insert(todo);
+            if(result)
+                return new ResponseEntity<>("SUCCESS", HttpStatus.CREATED);
+            else
+                return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -49,16 +68,24 @@ public class TodoController {
     @PutMapping()
     public ResponseEntity<?> updateTodo(@RequestBody Todos todo) {
         try {
-            return new ResponseEntity<>("Update Results", HttpStatus.OK);
+            boolean result = todoService.updateById(todo);
+            if(result)
+                return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping( {"", "/{id}"} )
-    public ResponseEntity<?> destroyTodo(@PathVariable(value="", required = false) String id) {
+    @DeleteMapping( "/{id}" )
+    public ResponseEntity<?> destroyTodo(@PathVariable("id") String id) {
         try {
-            return new ResponseEntity<>("Delete Results", HttpStatus.OK);
+            boolean result = todoService.deleteById(id);
+            if(result)
+                return new ResponseEntity<>("SUCCESS", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

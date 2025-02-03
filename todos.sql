@@ -10,8 +10,6 @@ created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-select * from todos;
-
 COMMENT ON COLUMN todos.no IS 'PK';
 COMMENT ON COLUMN todos.id IS 'UK';
 COMMENT ON COLUMN todos.name IS '할일';
@@ -19,3 +17,5 @@ COMMENT ON COLUMN todos.status IS '상태';
 COMMENT ON COLUMN todos.seq IS '순서';
 COMMENT ON COLUMN todos.created_at IS '등록일자';
 COMMENT ON COLUMN todos.updated_at IS '수정일자';
+
+select * from todos;
