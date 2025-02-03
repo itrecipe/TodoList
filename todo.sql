@@ -18,4 +18,9 @@ COMMENT ON COLUMN todos.seq IS '순서';
 COMMENT ON COLUMN todos.created_at IS '등록일자';
 COMMENT ON COLUMN todos.updated_at IS '수정일자';
 
+-- PostgreSQL에서 UUID 사용하는 방법
+-- 아래 명령으로 pgcrypto 확장을 해주면 사용가능 하다.
+-- CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+SELECT gen_random_uuid();
+
 select * from todos;
