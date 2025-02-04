@@ -21,7 +21,7 @@ public class SwaggerConfig {
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("TodoList Proejct API")
-                        .description("TodoList 프로젝트 API 입니다.")
+                        .description("TodoList 프로젝트 API 문서")
                         .version("v0.0.1"));
     }
 }

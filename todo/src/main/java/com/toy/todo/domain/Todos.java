@@ -3,6 +3,7 @@ package com.toy.todo.domain;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class Todos {
@@ -13,4 +14,8 @@ public class Todos {
     private Integer seq;
     private Date createdAt;
     private Date updatedAt;
+
+    public Todos() {
+        this.id = UUID.randomUUID().toString();
+    }
 }

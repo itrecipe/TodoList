@@ -111,4 +111,10 @@ public class Pagination {
         // 데이터 순서 번호
         this.index = (this.page - 1) * this.size;
     }
+
+    public void setPage(int page) {
+    }
+
+    public void setSize(int size) {
+    }
 }

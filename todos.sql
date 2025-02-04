@@ -20,9 +20,23 @@ COMMENT ON COLUMN todos.updated_at IS '수정일자';
 
 -- PostgreSQL에서 UUID 사용하는 방법
 -- 아래 명령으로 pgcrypto 확장을 해주면 사용가능 하다.
+
 -- CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 SELECT gen_random_uuid();
 
-select * from todos;
+-- 테스트용 더미 데이터
+insert into todos ( id, name) 
+values
+	( gen_random_uuid(), '할일1' ),
+	( gen_random_uuid(), '할일2' ),
+	( gen_random_uuid(), '할일3' ),
+	( gen_random_uuid(), '할일4' ),
+	( gen_random_uuid(), '할일5' ),
+	( gen_random_uuid(), '할일6' ),
+	( gen_random_uuid(), '할일7' ),
+	( gen_random_uuid(), '할일8' ),
+	( gen_random_uuid(), '할일9' ),
+	( gen_random_uuid(), '할일10' )
+;
 
--- 테스트
+select * from todos;
